@@ -16,18 +16,23 @@ users = {
 
 tables = {
   number: 1,
-  customer: "nakul",
+  firstName: "Nakul",
+  lastName: "Havelia",
   occupiedTimestamp: new Date(),
+  order: [],
+  count: 1,
   analytics: {
     totalCustomers: 10
   }
 };
 
 customers = {
-  name: "nakul",
-  inTime: new Date(),
-  outTime: new Date(),
-  billedOrders: [{
+  firstName: "Nakul",
+  lastName: "Havelia",
+  occupiedTimestamp: new Date(),
+  unseatTimestamp: new Date(),
+  count: 1,
+  order: [{
     name: "paneer",
     price: 100,
     timeInKitchen: new Date()
