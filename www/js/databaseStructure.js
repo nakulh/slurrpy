@@ -3,6 +3,7 @@ menu = {
   name: 'whatever',
   price: 100,
   inStock: true,
+  shortName: "srtNme",
   analytics: {
     totalOrders: 99
   }
@@ -44,4 +45,10 @@ kitchen = {
   modifiers: "extra spicy",
   rush: false,
   inTime: new Date()
+};
+
+orderHistory = {
+  items: [],
+  inTime: new Date(),
+  outTime: new Date()
 };

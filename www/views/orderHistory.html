@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Order History - Slurppy</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Font Link -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900" rel="stylesheet">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+
+    <!-- Datepicker Script -->
+    <script defer src="js/bootstrap-datepicker.min.js"></script>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand navbar-dark navbar-border">
+      <a id="navbar-back-navigation"  href="javascript:void(0);"><i class="fas fa-chevron-left"></i></a>
+      <a class="navbar-brand" href="#">slurppy</a>
+    </nav>
+
+    <h2 class="page-header">Order History</h2>
+
+    <div id="order-history-search-container" class="container">
+
+      <div class="row">
+
+        <div class="col">
+          <div id="order-history-searchbar-container" style="display: flex;">
+            <input id="input-search-order-history" type="search" placeholder="Customer Name, Date, etc." style="width: 100%; padding-left: 10px; padding-right: 10px;">
+            <button id="btn-search-order-history" class="btn btn-lg btn-red no-border-radius">Search</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" id="order-history-search-filter-container">
+
+        <div id="filter-chips-container" class="col-12 col-sm-10">
+        </div>
+
+        <div class="col-12 col-sm-2">
+          <a id="order-history-search-filter" href="javascript:void(0)" style=""><i class="fas fa-filter" style="margin-right: 5px;"></i>Filter</a>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="container-fluid">
+
+      <div id="customer-table-container">
+        <table id="order-history-table" class="table table-sm table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Items</th>
+              <th scope="col">Date</th>
+              <th scope="col">Time In</th>
+              <th scope="col">Time Out</th>
+              <th scope="col">Serve Time</th>
+              <th scope="col">Amount</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="modal fade" id="receipt-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="receipt-modal-label">Receipt - <span id="receipt-date"></span></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <table id="receipt-table" class="table table-sm table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col" class="text-center">Qty.</th>
+                  <th scope="col" class="text-center">Amt.</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+
+            <div class="modal-buttons-container">
+              <button id="btn-email-receipt" type="button" class="btn btn-red">E-mail</button>
+              <button id="btn-print-receipt" type="button" class="btn btn-red">Print</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="order-history-filter-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="order-history-filter-modal-label">Select your filters</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <p id="order-history-filter-form-error" class="form-error-text"></p>
+
+            <p style="margin-bottom: 0; font-size: 0.9em; font-weight: 500;">Choose dates to search</p>
+            
+            <div class="input-daterange input-group" style="padding-bottom: 10px;">
+              <input id="search-filter-start-date" type="text" class="input-sm form-control no-border-radius" name="start" placeholder="dd/mm/yyyy"/>
+              <span class="input-group-addon" style="color: #444; font-weight: 500; padding: 0 20px;">to</span>
+              <input id="search-filter-end-date" type="text" class="input-sm form-control no-border-radius" name="end" placeholder="dd/mm/yyyy"/>
+            </div>
+
+            <div class="modal-buttons-container">
+              <button id="btn-apply-filter" type="button" class="btn btn-red">Apply</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="js/popper.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/slurppy/orderHistoryScripts.js"></script>
+  </body>
+</html>

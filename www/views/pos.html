@@ -1,14 +1,291 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <title>POS</title>
+    <title>POS - Slurppy</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+
+    <!-- Font Link -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900" rel="stylesheet">
+    <script defer src="../js/ui/all.js"></script>
   </head>
   <body>
-  <h1>POS</h1>
 
-  <script src="../js/firebase.js"></script>
-  <script src="../js/db.js"></script>
-  <script src="../js/firebase.js"></script>
-  <script src="../js/pos.js"></script>
+    <div id="overlay-menu" class="container-fluid">
+      <div id="overlay-menu-header" class="row">
+
+        <div class="col-1"></div>
+
+        <div class="col">
+          <p id="overlay-menu-table"><!-- table no. --></p>
+          <p id="overlay-menu-guest-count"><!-- no. of guests on table --></p>
+        </div>
+
+        <div class="col-1">
+          <a id="btn-close-menu" href="javascript:void(0)">&times;</a>
+        </div>
+
+      </div>
+
+      <div id="overlay-menu-body" class="container-fluid">
+        <div class="row" style="height: 100%;">
+
+          <div id="order-summary-container" class="col-12 col-md-4 col-lg-3">
+            <p class="section-header">Order</p>
+
+            <table id="table-order-summary" class="table table-sm table-hover">
+              <thead>
+                  <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Item</th>
+                      <th scope="col" class="text-center">Qty.</th>
+                      <th scope="col" class="text-center">Amt.</th>
+                  </tr>
+              </thead>
+              <tbody id="orderList">
+                <!-- guest's ordered items appear here -->
+              </tbody>
+            </table>
+
+            <div id="order-btn-container" class="row no-gutters">
+              <button id="btn-remove-item" class="col btn btn-outline-danger btn-sm order-btn-options"><i class="far fa-trash-alt" aria-hidden="true" style="margin-right:10px;"></i>Remove</button>&nbsp;
+              <button id="btn-send-item" class="col btn btn-dark btn-sm order-btn-options"><i class="fas fa-utensils" aria-hidden="true" style="margin-right:10px;"></i>Send</button>
+              <button id="btn-checkout" style="margin-top: 10px;" class="col-12 btn btn-primary order-btn-options"><i class="fas fa-credit-card" aria-hidden="true" style="margin-right:10px;"></i>checkout</button>
+            </div>
+
+          </div>
+
+          <div class="col-12 col-md-8 col-lg-9">
+            <div id="category-container">
+              <p class="section-header">Categories</p>
+              <!-- categories get populated here -->
+            </div>
+
+            <div id="items-container" class="row">
+
+              <div id="categoryMenuList" class="col-sm-8">
+                <!-- category menu gets populated here -->
+              </div>
+
+              <div class="col-sm-4">
+                <p id="selectedItem" class="section-header">Select an Item!</p>
+                <div class="form-group form-row">
+                  <div class="col">
+                    <select id="input-item-count" class="form-control no-border-radius">
+                      <option selected>Quantity</option>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                      <option>6</option>
+                    </select>
+                  </div>
+                </div>
+                <button id="btn-item-add" onclick="addItemToTable()" type="button" class="btn btn-dark btn-block btn-menu" style="margin-right:5px;">Add Item</button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-walkin" class="container-fluid">
+      <div id="overlay-walkin-header" class="row">
+
+        <div class="col">
+          <button id="btn-new-walkin" type="button" class="btn btn-outline-dark">+ New</button>
+        </div>
+
+        <div class="col-1">
+          <a id="btn-close-walkin" href="javascript:void(0)"><i class="fas fa-times"></i></a>
+        </div>
+
+      </div>
+
+      <div id="overlay-walkin-body">
+        <p class="section-header" style="border:none; padding:10px; margin:0;">Current Walkin Orders</p>
+        <!-- walkins go here -->
+        <!--<div id="walkin-book-item-1">
+          <span id="walkin-guest-items-pos-1" class="border rounded"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;2</span>
+          <p id="walkin-guest-name-1">Harry Potter</p>
+          <p id="walkin-guest-time-1" class="ml-auto">00:00</p>
+        </div>
+        <div id="walkin-book-item-2">
+          <span id="walkin-guest-items-pos-2" class="border rounded"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;1</span>
+          <p id="walkin-guest-name-2">Arya Stark</p>
+          <p id="walkin-guest-time-2" class="ml-auto">00:00</p>
+        </div>
+        <div id="walkin-book-item-3">
+          <span id="walkin-guest-items-pos-3" class="border rounded"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;3</span>
+          <p id="walkin-guest-name-3">Percy Jackson</p>
+          <p id="walkin-guest-time-3" class="ml-auto">00:00</p>
+        </div>
+        <div id="walkin-book-item-4">
+          <span id="walkin-guest-items-pos-4" class="border rounded"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;5</span>
+          <p id="walkin-guest-name-4">Tim Burton</p>
+          <p id="walkin-guest-time-4" class="ml-auto">00:00</p>
+        </div>-->
+      </div>
+    </div>
+
+    <nav class="navbar navbar-expand navbar-dark">
+      <a class="navbar-brand" href="javascript:void(0);">slurppy</a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <button id="btn-walkin" class="btn btn-flat-light">Walkin</button>
+          </li>
+          <li class="nav-item">
+            <a id="nav-item-user" class="nav-link" href="javascript:void(0);"><img src="../images/slurppy-logo-white.png" alt="slurppy logo" height="25px" width="25px"><!-- <i class="fa fa-user-circle-o" style="font-size: 25px;" aria-hidden="true"> --></i></a>
+            <div id="user-options-container">
+              <div id="user-options-head">
+                <div>
+                  <p id="text-user-name">John Doe</p>
+                  <p id="text-user-position">Manager</p>
+                </div>
+                <div class="ml-auto">
+                  <span id="img-user-photo"><i class="far fa-user-circle" style="font-size:25px;"></i></span>
+                </div>
+              </div>
+              <div id="user-options-body">
+                <ul>
+                  <li><a id="link-menu" href="menu.html">Menu</a></li>
+                  <li><a id="link-employees" href="employees.html">Employees</a></li>
+                  <li><a id="link-profile" href="account.html">Account Settings</a></li>
+                  <li><a id="link-logout" href="javascript:void(0);">Sign Out</a></li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div id="content-container" class="container-fluid">
+      <div class="row" style="height:100%;">
+        <div id="visitor-book-container" class="col-md-4 col-lg-3">
+          <p id="visitor-book-header">Visitor's Book</p>
+          <div id="visitor-book-body">
+
+          </div>
+        </div>
+
+        <div id="room-map-container" class="col-md-8 col-lg-9">
+          <p id="room-map-header">Dining Room</p>
+          <div id="room-map-body">
+
+            <div style="width: 100%;">
+
+              <div class="row room-table-row">
+                <div class="room-alley"></div>
+              </div>
+
+              <div class="row room-table-row mx-auto">
+                <div class="room-table-none"></div>
+                <div id="room-table-1" class="room-table-rect rounded"><span class="room-table-content">1</span></div>
+                <div class="room-table-none"></div>
+                <div id="room-table-2" class="room-table-rect rounded"><span class="room-table-content">2</span></div>
+                <div class="room-table-none"></div>
+                <div id="room-table-3" class="room-table-rect rounded"><span class="room-table-content">3</span></div>
+                <div class="room-table-none"></div>
+                <div id="room-table-4" class="room-table-rect rounded"><span class="room-table-content">4</span></div>
+              </div>
+
+              <div class="row room-table-row">
+                <div class="room-alley"></div>
+              </div>
+
+              <div class="row room-table-row">
+                <div class="room-alley"></div>
+              </div>
+              <!--add class 'room-table-occupied' to room-table-x to make it occupied -->
+              <div class="row room-table-row">
+                <div class="room-table-none"></div>
+                <div class="room-table-none"></div>
+                <div id="room-table-5" class="room-table-rect rounded"><span class="room-table-content">5</span></div>
+                <div class="room-table-none"></div>
+                <div id="room-table-6" class="room-table-rect rounded"><span class="room-table-content">6</span></div>
+                <div class="room-table-none"></div>
+                <div id="room-table-7" class="room-table-rect rounded"><span class="room-table-content">7</span></div>
+              </div>
+
+              <div class="row room-table-row">
+                <div class="room-alley"></div>
+              </div>
+
+            </div>
+
+            <div style="height: auto; width: 25px; background: #f4f4f4; color:#000; font-weight:500;"><p style="margin:0; text-align:center; writing-mode:vertical-rl; text-orientation:sideways;">ENTRY</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="seat-customer-modal" tabindex="-1" role="dialog" aria-labelledby="seat-customer-modal-label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="seat-customer-modal-label">Seat your customer</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p id="seat-customer-form-error" class="form-error-text"></p>
+            <div class="form-group form-row">
+                <div class="col">
+                    <input id="input-fn" class="form-control no-border-radius" placeholder="First Name" type="text">
+                </div>
+                <div class="col">
+                    <input id="input-ln" class="form-control no-border-radius" placeholder="Last Name" type="text">
+                </div>
+            </div>
+            <div class="form-group form-row">
+                <div class="col">
+                    <input id="input-email" class="form-control no-border-radius" placeholder="Email" type="Email">
+                </div>
+            </div>
+            <div class="form-group form-row">
+                <div class="col">
+                    <select id="input-guest-count" class="form-control no-border-radius">
+                      <option selected>Select number of guests</option>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-buttons-container">
+              <button id="btn-seat-customer" type="button" class="btn btn-red btn-block">Seat Customer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div id="footer"></div> -->
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src="../js/db.js"></script>
+    <script src="../js/firebase.js"></script>
+    <script src="../js/ui/jquery-3.2.1.slim.min.js"></script>
+    <script src="../js/pos.js"></script>
+    <script src="../js/ui/popper.min.js"></script>
+    <script src="../js/ui/jquery-3.2.1.slim.min.js"></script>
+    <script src="../js/ui/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/ui/posScripts.js"></script>
+    <script>if (window.module) module = window.module;</script>
   </body>
 </html>

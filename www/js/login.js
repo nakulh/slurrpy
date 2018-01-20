@@ -18,18 +18,19 @@ setTimeout(()=>{
   });
 }, 4000);
 
-
 const $ = require('jquery');
-$("#submit").click(function(e){
-  e.preventDefault();
-  username = $('#username').val();
-  password = $('#password').val();
-  if(usersSynced){
-    db.do.login(username, password).then(()=>{
-      console.log('logged in');
-      document.location.href = '../views/pos.html';
-    }).catch(()=>{
-      console.log('incorrect credentials');
-    });
-  }
+$(document).ready(function () {
+  $("#submit").click(function(e){
+    e.preventDefault();
+    username = $('#username').val();
+    password = $('#password').val();
+    if(usersSynced){
+      db.do.login(username, password).then(()=>{
+        console.log('logged in');
+        document.location.href = '../views/pos.html';
+      }).catch(()=>{
+        console.log('incorrect credentials');
+      });
+    }
+  });
 });
