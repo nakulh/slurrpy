@@ -33,7 +33,7 @@ body {
 .btn-flat-light {
 	color: #fff;
 	background: none;
-	border-color: none;
+	border-color: transparent;
 	cursor: pointer;
 	transition: 500ms;
 }
@@ -47,7 +47,7 @@ body {
 .btn-flat-dark {
 	color: #393939;
 	background: none;
-	border-color: none;
+	border-color: transparent;
 	cursor: pointer;
 	transition: 500ms;
 }
@@ -520,6 +520,7 @@ div[id^="visitor-book-item-"] > div {
 	display: flex;
 	justify-content: flex-end;
 	border-radius: 0;
+	transition: 500ms;
 }
 
 .modal-buttons-container > button {
@@ -560,8 +561,12 @@ div[id^="visitor-book-item-"] > div {
     }
 }
 
-
 /*menu.html styles*/
+
+.page-header {
+	font-weight: 600;
+	margin: 20px 0 0 15px;
+}
 
 #menu-table-container {
 	background: #fff;
@@ -584,4 +589,272 @@ a[id^='category-edit-'], a[id^='item-edit-'] {
 
 a[id^='category-delete-'], a[id^='item-delete-'] {
 	color: #dc3545;
+}
+
+/*employees.html styles*/
+
+#btn-employee-add {
+    font-weight: 600;
+}
+
+#employee-table-container {
+	background: #fff;
+	margin: 10px 0 20px;
+	border: 2px solid #f1f1f1;
+	padding: 10px 20px;
+}
+
+#employee-table-container > table > thead > tr > th {
+	border: none;
+}
+
+a[id^='employee-edit-'] {
+	color: #007bff;
+}
+
+a[id^='employee-delete-'] {
+	color: #dc3545;
+}
+
+/*editEmployees.html styles*/
+
+.custom-card-section-header {
+	margin-top: 20px;
+}
+
+.custom-card-section-header > p {
+	font-size: 0.9em;
+	font-weight: 500;
+	color: #666666;
+	margin: 0;
+}
+
+.custom-card {
+	background: #fff;
+	margin: 5px 0 20px;
+	padding: 20px 30px;
+	border: 1px solid rgba(0,0,0,.125);
+	border-radius: 0;
+	box-shadow: 1px 1px 5px gray;
+	-webkit-box-shadow: 1px 1px 5px gray;
+	-moz-box-shadow: 1px 1px 5px gray;
+}
+
+.custom-card-buttons-container {
+	display: flex;
+	justify-content: flex-end;
+	border-radius: 0;
+	transition: 500ms;
+}
+
+.custom-card-buttons-container > button {
+	border-radius: 0;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	font-size: 0.9em;
+	cursor: pointer;
+}
+
+.custom-card-buttons-container > :not(:last-child) {
+    margin-right: .25em;
+}
+
+.shift-time > div {
+	display: flex;
+	justify-content: space-between;
+}
+
+#shift-days-text, #shift-time-from-text, #shift-time-to-text, #employee-salary-text {
+	font-weight: 600;
+}
+
+#shift-days-options {
+	display: flex;
+}
+
+#shift-days-options > p {
+	font-size: 0.9em;
+	font-weight: 600;
+	padding: 5px 10px;
+	border: 1px solid #f44336;
+	margin: 0 4px 0 0;
+	cursor: pointer;
+	transition: 400ms;
+}
+
+#shift-days-options > p:hover {
+	color: #fff;
+	background: #f44336;
+}
+
+.shift-day-active{
+	color: #fff;
+	background: #f44336;
+}
+
+.shift-time, .employee-salary {
+	margin-top: 15px;
+}
+
+#shift-time-from-text, #shift-time-to-text, #employee-salary-text {
+	margin: 5px 0 0;
+}
+
+.shift-time-input {
+	width: 100px;
+}
+
+#shift-time-from-input, #shift-time-to-input {
+	border-radius: 0;
+	width: 100px;
+	font-size: 0.9em;
+}
+
+.information-container > label {
+	font-size: 0.9em;
+}
+
+.permission-container {
+	padding: 6px 0;
+}
+
+.permission-container > label, .information-container > label {
+	font-weight: 500;
+	margin: 0;
+}
+
+.permission-checkbox {
+	float: right;
+}
+
+/*manager.html styles*/
+
+.custom-card-space-top {
+	margin-top: 15px;
+}
+
+.custom-card-head {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.custom-card-body {
+	margin-top: 10px;
+}
+
+.custom-card-head-title {
+	font-size: 1.5em;
+	font-weight: 600;
+	margin: 0;
+}
+
+#discount-table {
+	margin-top: 15px;
+}
+
+#discount-table > thead > tr > th, #discount-table > tbody > tr > th, #discount-table > tbody > tr > td {
+	border: none;
+}
+
+/*seviceHistory.html styles*/
+
+#service-history-search-container {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+#input-search-service-history {
+	border: 1px solid #ccc;
+}
+
+#btn-search-service-history {
+	font-size: 1.2em;
+	font-weight: 600;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+#service-history-search-filter-container {
+	margin-top: 5px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.chip {
+    display: inline-block;
+	color: #555;
+    background-color: #e5e5e5;
+    font-weight: 600;
+    font-size: 0.9em;
+    padding: 0 10px;
+    border-radius: 1em;
+}
+
+span[id^="btn-close-chip-"] {
+    color: #888;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+    float: right;
+    cursor: pointer;
+    transition: 500ms;
+}
+
+.btn-close-chip:hover {
+    color: #444;
+}
+
+#service-history-search-filter {
+	font-size: 0.9em;
+	font-weight: 500;
+	float: right;
+	text-decoration: none;
+}
+
+#service-history-search-filter:hover {
+	color: #007bff;
+}
+
+#customer-table-container {
+	background: #fff;
+	margin: 10px 0 20px;
+	border: 2px solid #f1f1f1;
+	padding: 10px 20px;
+}
+
+#service-history-table > thead > tr > th, #receipt-table > thead > tr > th, #receipt-table > tbody > tr > th, #receipt-table > tbody > tr > td {
+	border: none;
+}
+
+td[id^="receipt-item-quantity-"], td[id^="receipt-item-amount-"] {
+	text-align: center;
+}
+
+/*kitchen.html styles*/
+
+.order-info-container {
+	display: flex;
+	justify-content: space-between;
+}
+
+.order-info-container > p {
+	font-weight: 600;
+	margin: 10px;
+}
+
+#kitchen-sticky-footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding: 12px;
+	background: #FFFFFF;
+	min-height: 60px;
+	box-shadow: 0 -1px 4px 0 rgba(12, 12, 13, 0.1);
+}
+
+#footer-restaurant-name {
+	font-weight: 600;
 }

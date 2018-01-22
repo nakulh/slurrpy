@@ -11,12 +11,12 @@ const db = {
   foodCategories: new Datastore({ filename: 'data/foodCategories.db', autoload: true }),
   orderHistory: new Datastore({ filename: 'data/orderHistory.db', autoload: true })
 };
-db.orderHistory.insert([{items: [{"name":"Paneer masala","price":"600"},{"name": "daya", "price": 300}], inTime: new Date('January 31 2018 12:30'), outTime: new Date('January 31 2018 13:30')},
-                        {items: [{"name":"Paneer masala","price":"600"},{"name": "daya", "price": 300}], inTime: new Date('December 31 2017 12:30'), outTime: new Date('December 31 2017 15:30')},
-                        {items: [{"name":"Paneer masala","price":"600"},{"name": "daya", "price": 300}], inTime: new Date('November 31 2017 12:30'), outTime: new Date('November 31 2017 16:30')}], (err, newDoc)=>{
+/*db.orderHistory.insert([{items: [{"name":"Paneer masala","price":"600", "quantity": 1},{"name": "daya", "price": 300, "quantity": 2}], inTime: new Date('January 30 2018 12:30'), outTime: new Date('January 30 2018 13:30')},
+                        {items: [{"name":"Paneer masala","price":"600", "quantity": 4},{"name": "daya", "price": 300, "quantity": 1}], inTime: new Date('December 30 2017 12:30'), outTime: new Date('December 30 2017 15:30')},
+                        {items: [{"name":"Paneer masala","price":"600", "quantity": 1},{"name": "daya", "price": 300, "quantity": 1}], inTime: new Date('November 30 2017 12:30'), outTime: new Date('November 30 2017 16:30')}], (err, newDoc)=>{
                   console.log(err);
                   console.log(newDoc);
-                });
+                });*/
 
 db.do  = {};
 db.do.login = (username, password) => {
@@ -298,6 +298,18 @@ db.do.resetOrderList = (order, tableNumber) => {
       }
       console.log("update Count: " + c);
       res("order reset");
+    });
+  });
+};
+
+db.do.getOrderHistory = () => {
+  return new Promise((res, rej) => {
+    db.orderHistory.find({items: { $exists: true}}, (err, docs) => {
+      if(err){
+        console.log(err);
+        rej();
+      }
+      res(docs);
     });
   });
 };

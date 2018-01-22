@@ -7,22 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
 
     <!-- Font Link -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900" rel="stylesheet">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+    <script defer src="../js/ui/all.js"></script>
 
     <!-- Datepicker Script -->
-    <script defer src="js/bootstrap-datepicker.min.js"></script>
+
   </head>
   <body>
 
     <nav class="navbar navbar-expand navbar-dark navbar-border">
-      <a id="navbar-back-navigation"  href="javascript:void(0);"><i class="fas fa-chevron-left"></i></a>
-      <a class="navbar-brand" href="#">slurppy</a>
+      <a id="navbar-back-navigation"  href="pos.html"><i class="fas fa-chevron-left"></i></a>
+      <a class="navbar-brand" href="pos.html">slurppy</a>
     </nav>
 
     <h2 class="page-header">Order History</h2>
@@ -122,7 +122,7 @@
             <p id="order-history-filter-form-error" class="form-error-text"></p>
 
             <p style="margin-bottom: 0; font-size: 0.9em; font-weight: 500;">Choose dates to search</p>
-            
+
             <div class="input-daterange input-group" style="padding-bottom: 10px;">
               <input id="search-filter-start-date" type="text" class="input-sm form-control no-border-radius" name="start" placeholder="dd/mm/yyyy"/>
               <span class="input-group-addon" style="color: #444; font-weight: 500; padding: 0 20px;">to</span>
@@ -140,9 +140,14 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="js/popper.min.js"></script>
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/slurppy/orderHistoryScripts.js"></script>
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src="../js/db.js"></script>
+    <script src="../js/ui/jquery-3.2.1.slim.min.js"></script>
+    <script src="../js/orderHistory.js"></script>
+    <script src="../js/ui/popper.min.js"></script>
+    <script src="../js/ui/bootstrap.min.js"></script>
+    <script defer src="../js/ui/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="../js/ui/orderHistoryScripts.js"></script>
+    <script>if (window.module) module = window.module;</script>
   </body>
 </html>

@@ -1,8 +1,8 @@
+/*jshint esversion: 6 */
+var orderHistory = {};
+var currentCustomerId = 0;
 $(document).ready(function(){
 	console.log("ready!");
-
-	var orderHistory = {};
-	var currentCustomerId = 0;
 
 	getOrderHistory();
 
@@ -11,51 +11,10 @@ $(document).ready(function(){
 	});
 
 	function getOrderHistory(){
-		$.get("http://123.test", function(data){
+		orderHistoryManager.do.getAllOrders().then((data) => {
 			orderHistory = data;
 			populateOrderHistoryTable(data);
 		});
-
-		//Only for Testing! To be removed during deployment.
-		data = {
-			1: {
-				'items count': 2,
-				'date': '13/01/2018',
-				'time in': '12:15',
-				'time out': '13:41',
-				'serve time': '00:00',
-				'amount': 550,
-				'order': {
-					1: {
-						'name': 'Paneer Tikka',
-						'quantity': 1,
-						'amount': 450
-					},
-					2: {
-						'name': 'Tandoori Roti',
-						'quantity': 4,
-						'amount': 100
-					},
-				}
-			},
-			2: {
-				'items count': 1,
-				'date': '12/01/2018',
-				'time in': '11:25',
-				'time out': '12:02',
-				'serve time': '00:00',
-				'amount': 350,
-				'order': {
-					3: {
-						'name': 'Honey Chili Potato',
-						'quantity': 1,
-						'amount': 350
-					},
-				}
-			}
-		};
-		orderHistory = data;
-		populateOrderHistoryTable(data);
 	}
 
 	function populateOrderHistoryTable(orders){
@@ -77,43 +36,12 @@ $(document).ready(function(){
 				'<td id="customer-timeout-' + order_id + '">' + order_data['time out'] + '</td>' +
 				'<td id="customer-serve-time-' + order_id + '">' + order_data['serve time'] + '</td>' +
 				'<td id="customer-amount-' + order_id + '">' + order_data['amount'] + '</td>' +
-				'<td><a id="customer-receipt-' + order_id + '" href="javascript:void(0);" class="remove-decoration"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>' +
+				`<td><a id="customer-receipt-' + order_id + '" href="javascript:void(0);" class="remove-decoration" onclick="prepareReciept(${order_id})"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>` +
 				'</tr>';
 				$("#order-history-table > tbody").append(orderHistoryRow);
 				i++;
 			});
 		}
-	}
-
-	function openReceiptModal(){
-		$("#receipt-modal").modal('show');
-	}
-
-	function closeReceiptModal(){
-		$("#receipt-modal").modal('hide');
-	}
-
-	$('a[id^="customer-receipt-"]').click(function(){
-		currentCustomerId = $(this).attr("id").slice(17);
-		populateReceiptModal(orderHistory[currentCustomerId]);
-		openReceiptModal();
-	});
-
-	function populateReceiptModal(customerData){
-		var i = 1;
-		$('#receipt-date').text(customerData['date']);
-		$('#receipt-customer-name').text(customerData['name']);
-		$("#receipt-table > tbody").empty();
-		$.each(customerData['order'], function(order_id, order_data){
-			var orderRow = '<tr>' +
-			'<th scope="row">' + i + '</th>' +
-			'<td id="receipt-item-name-' + order_id + '">' + order_data['name'] + '</td>' +
-			'<td id="receipt-item-quantity-' + order_id + '">' + order_data['quantity'] + '</td>' +
-			'<td id="receipt-item-amount-' + order_id + '">' + order_data['amount'] + '</td>' +
-			'</tr>';
-			$("#receipt-table > tbody").append(orderRow);
-			i++;
-		});
 	}
 
 	function openOrderHistoryFilterModal(){
@@ -165,7 +93,40 @@ $(document).ready(function(){
 		if(searchFilterValid()){
 			addFilterChip($('#search-filter-start-date').val());
 			addFilterChip($('#search-filter-end-date').val());
+			orderHistory = orderHistoryManager.do.getBetweenDates($('#search-filter-start-date').val(), $('#search-filter-end-date').val());
 			closeOrderHistoryFilterModal();
+			populateOrderHistoryTable(orderHistory);
 		}
 	});
 });
+
+function openReceiptModal(){
+	$("#receipt-modal").modal('show');
+}
+
+function closeReceiptModal(){
+	$("#receipt-modal").modal('hide');
+}
+
+const prepareReciept = function(id){
+	populateReceiptModal(orderHistory[id]);
+	openReceiptModal();
+};
+
+function populateReceiptModal(customerData){
+	console.log(customerData);
+	var i = 1;
+	$('#receipt-date').text(customerData['date']);
+	$('#receipt-customer-name').text(customerData['name']);
+	$("#receipt-table > tbody").empty();
+	$.each(customerData['order'], function(order_id, order_data){
+		var orderRow = '<tr>' +
+		'<th scope="row">' + i + '</th>' +
+		'<td id="receipt-item-name-' + order_id + '">' + order_data['name'] + '</td>' +
+		'<td id="receipt-item-quantity-' + order_id + '">' + order_data['quantity'] + '</td>' +
+		'<td id="receipt-item-amount-' + order_id + '">' + order_data['amount'] + '</td>' +
+		'</tr>';
+		$("#receipt-table > tbody").append(orderRow);
+		i++;
+	});
+}
