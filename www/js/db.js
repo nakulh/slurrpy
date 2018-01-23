@@ -11,9 +11,8 @@ const db = {
   foodCategories: new Datastore({ filename: 'data/foodCategories.db', autoload: true }),
   orderHistory: new Datastore({ filename: 'data/orderHistory.db', autoload: true })
 };
-/*db.orderHistory.insert([{items: [{"name":"Paneer masala","price":"600", "quantity": 1},{"name": "daya", "price": 300, "quantity": 2}], inTime: new Date('January 30 2018 12:30'), outTime: new Date('January 30 2018 13:30')},
-                        {items: [{"name":"Paneer masala","price":"600", "quantity": 4},{"name": "daya", "price": 300, "quantity": 1}], inTime: new Date('December 30 2017 12:30'), outTime: new Date('December 30 2017 15:30')},
-                        {items: [{"name":"Paneer masala","price":"600", "quantity": 1},{"name": "daya", "price": 300, "quantity": 1}], inTime: new Date('November 30 2017 12:30'), outTime: new Date('November 30 2017 16:30')}], (err, newDoc)=>{
+/*db.walkins.insert([{order: [{"name":"Paneer masala","price":"600", "quantity": 1},{"name": "daya", "price": 300, "quantity": 2}], inTime: new Date('January 30 2018 12:30')},
+                        {order: [{"name":"Paneer masala","price":"600", "quantity": 4},{"name": "daya", "price": 300, "quantity": 1}], inTime: new Date('December 30 2017 12:30')}], (err, newDoc)=>{
                   console.log(err);
                   console.log(newDoc);
                 });*/
@@ -204,16 +203,15 @@ db.do.seatCustomer = (customer, num) => {
   });
 };
 
-db.do.walkinCustomer = (customer, num) =>{
+db.do.walkinCustomer = () =>{
   return new Promise((res, rej)=>{
-    db.walkins.insert({number: parseInt(num), firstName: customer.firstName, lastName: customer.lastName, email: customer.email, count: customer.count,
-    occupiedTimestamp: new Date(), order: []}, (err, d) => {
+    db.walkins.insert({inTime: new Date(), order: []}, (err, newDoc) => {
       if(err){
         console.log(err);
         rej();
       }
-      console.log("new doc " + d);
-      res("Customer Walkedin");
+      console.log("new doc " + newDoc);
+      res(newDoc._id);
     });
   });
 };
@@ -261,7 +259,7 @@ db.do.getTablesStatus = () => {
 
 db.do.getWalkinsStatus = () => {
   return new Promise((res, rej) => {
-    db.walkins.find({ number: {$exists: true}}, (err, docs) => {
+    db.walkins.find({ _id: {$exists: true}}, (err, docs) => {
       if(err){
         console.log(err);
         rej();
@@ -289,9 +287,22 @@ db.do.addOrder = (order, quantity, modifier, table) => {
   });
 };
 
-db.do.resetOrderList = (order, tableNumber) => {
+db.do.addOrderToWalkin = (item, id) => {
   return new Promise((res, rej) => {
-    db.tables.update({number: parseInt(tableNumber)}, {$set: {order: order}}, {}, (err, c) =>{
+    db.walkins.update({_id: id}, {$push: {order: item}}, {}, (err, upCount) => {
+      if(err){
+        console.log(err);
+        rej(err);
+      }
+      console.log("update count " + upCount);
+      res('order added');
+    });
+  });
+};
+
+db.do.resetOrderList = (order, id) => {
+  return new Promise((res, rej) => {
+    db.walkins.update({_id: id}, {$set: {order: order}}, {}, (err, c) =>{
       if(err){
         console.log(err);
         rej();
@@ -310,6 +321,27 @@ db.do.getOrderHistory = () => {
         rej();
       }
       res(docs);
+    });
+  });
+};
+
+db.do.archiveOrder = (record) => {
+  return new Promise((res, rej) => {
+    db.orderHistory.insert(record, (err, newDoc) => {
+      if(err){
+        console.log(err);
+        res(err);
+      }
+      console.log("new doc");
+      console.log(newDoc);
+    });
+  });
+};
+
+db.do.walkOutCustomer = (id) => {
+  return new Promise((res, rej) => {
+    db.walkins.remove({_id: id}, {}, (err, delCount) => {
+      console.log("deleted " + delCount);
     });
   });
 };

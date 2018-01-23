@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-//const $ = require('jquery');
+const $ = require('jquery');
 var {ipcRenderer} = require('electron');
 ipcRenderer.on('cook', (e, p)=>{
   console.log(p);
@@ -7,17 +7,15 @@ ipcRenderer.on('cook', (e, p)=>{
 var pos = {};
 pos.do = {};
 var posState = {
-  isOccupied: [false, false, false, false, false, false, false],
-  selectedTable: 0,
-  tables: [{}, {}, {}, {}, {}, {}, {}],
+  selectedWalkin: false,
   walkinsCounter: 0,
   walkins: {},
   categoryMenu: [],
   selectedItem: false,
-  customerType: 'table'
+  currentOrder: []
 };
 
-const getCategoryButton = (c, category)=>{
+const getCategoryButton = (c, category) => {
   return $(`<button id="cat-${c}" onclick="openCategory('${category}')" type="button" class="btn btn-outline-dark btn-menu">${category}</button>`);
 };
 
@@ -25,17 +23,16 @@ const getItemButton = (i, item) => {
   return $(`<button id="item-${i}" onclick="selectItem(${i})" type="button" class="btn btn-outline-dark btn-menu">${item}</button>`);
 };
 
-const getOrderListItem = (item, status, i) => {
-  if(status == 'new'){
-    status = `<input id="order-item-checkbox-${i}" type="checkbox">`;
-  }
-  else if (status == 'inKitchen'){
+const getOrderListItem = (item, i) => {
+  status = `New`;
+  if (item.status == 'inKitchen'){
     status = `<i class="fas fa-utensils" aria-hidden="true">`;
   }
-  else if(status == 'served'){
+  else if(item.status == 'served'){
     status = `<i class="fas fa-shopping-basket" aria-hidden="true">`;
   }
   return $(`<tr>
+    <th scope="row"><input id="order-item-checkbox-${i}" type="checkbox"></th>
     <th scope="row">${status}</i></th>
     <td>${item.name}</td>
     <td id="order-item-quantity-1" class="text-center">${item.quantity}</td>
@@ -43,49 +40,31 @@ const getOrderListItem = (item, status, i) => {
   </tr>`);
 };
 
-const getVisitorElement = (tableNumber, visitorName, headCount, orderCount) => {
-  return $(`<div id="visitor-book-item-${tableNumber}">
-    <p id="seated-guest-table-1" class="rounded-circle">${tableNumber}</p>
-    <div>
-      <div class="visitor-book-item-info-container">
-        <p id="seated-guest-name-${tableNumber}">${visitorName}</p>
-        <p id="seated-guest-time-${tableNumber}" class="ml-auto">00:00</p>
-      </div>
-      <div class="visitor-book-item-status-container">
-        <span id="seated-guest-count-${tableNumber}" class="border rounded"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;${headCount}</span>
-        <span id="seated-guest-items-pos-${tableNumber}" class="border rounded"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;${orderCount}</span>
-      </div>
+const getWalkinElement = (walkinNumber, order) => {
+  console.log(order);
+  orderHTML = "";
+  for(let x = 0; x < order.length; x++){
+    orderHTML += `<p>${order[x].quantity}x ${order[x].name}</p>`;
+  }
+  posState.walkinsCounter++;
+  return $(`<div id="order-info-${walkinNumber}">
+    <div class="order-header">
+      <p>#<span id="order-info-id-${walkinNumber}">${posState.walkinsCounter}</span><span id="order-info-edit-${walkinNumber}" onclick="editOrder('${walkinNumber}')"><i class="fas fa-edit" aria-hidden="true"></i></span></p>
+      <p id="order-info-timer-${walkinNumber}">00:00</p>
+    </div>
+    <div id="order-body-${walkinNumber}">
+      ${orderHTML}
     </div>
   </div>`);
 };
 
-const getWalkinElement = (walkinNumber, visitorName, headCount) => {
-  return $(`<div id="walkin-book-item-${walkinNumber}" class="walkin-book-item" onclick="openMenuWalkin(${walkinNumber})">
-    <span id="walkin-guest-items-pos-1" class="border rounded"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;${headCount}</span>
-    <p id="walkin-guest-name-1">${visitorName}</p>
-    <p id="walkin-guest-time-1" class="ml-auto">00:00</p>
-  </div>`);
-};
-
-db.do.getTablesStatus().then((tables) => {
-  for(var x = 0; x < tables.length; x++){
-    table = tables[x];
-    if(table.firstName){
-        $('#room-table-' + table.number).addClass("room-table-occupied");
-        $('#visitor-book-body').append(getVisitorElement(table.number, table.firstName+" "+table.lastName, table.count, table.order.length));
-        posState.isOccupied[table.number - 1] = true;
-        posState.tables[table.number - 1] = table;
-    }
-  }
-});
-
 db.do.getWalkinsStatus().then((walkins) => {
+  $('#orders-container').empty();
   for(let x = 0; x < walkins.length; x++){
       walkin = walkins[x];
-      if(walkin.firstName){
-        $('#overlay-walkin-body').append(getWalkinElement(walkin.number, walkin.firstName+" "+walkin.lastName, walkin.count));
-        posState.walkinsCounter = posState.walkinsCounter < walkin.number ? walkin.number : posState.walkinsCounter;
-        posState.walkins[walkin.number] = walkin;
+      if(walkin._id){
+        $('#orders-container').append(getWalkinElement(walkin._id, walkin.order));
+        posState.walkins[walkin._id] = walkin;
       }
   }
 });
@@ -96,15 +75,6 @@ db.do.getCategories().then((categories) => {
     $('#category-container').append(getCategoryButton(c, categories[c]));
   }
 });
-
-pos.do.seatCustomer = (customer) => {
-  posState.tables[posState.selectedTable - 1] = customer;
-  posState.tables[posState.selectedTable - 1].order = [];
-  posState.isOccupied[posState.selectedTable - 1]  = true;
-  db.do.seatCustomer(customer, posState.selectedTable).then((msg)=>{
-    console.log(msg);
-  });
-};
 
 pos.do.walkinCustomer = (customer) => {
   posState.walkinsCounter++;
@@ -129,16 +99,53 @@ pos.do.getMenuFromCategory = (category) => {
   });
 };
 
-pos.do.addItemToTable = (item, quantity, tableNumber) => {
-  posState.tables[tableNumber - 1].order.push(item);
-  db.do.addOrder(item, quantity, "not hot", tableNumber).then((msg)=>{
-    console.log(msg);
+pos.do.addItemToWalkin = (item, quantity) => {
+  item.quantity = quantity;
+  item.status = "new";
+  item.custom = "not hot";
+  posState.walkins[posState.selectedWalkin].order.push(item);
+  db.do.addOrderToWalkin(item, posState.selectedWalkin).then((msg)=>{
   });
 };
 
 pos.do.resetOrderList = () => {
-  db.do.resetOrderList(posState.tables[posState.selectedTable -1].order, posState.selectedTable).then((res) => {
+  orderList = posState.walkins[posState.selectedWalkin].order;
+  db.do.resetOrderList(orderList, posState.selectedWalkin).then((res) => {
     console.log(res);
+  });
+};
+
+pos.do.sendItemsToKitchen = (items) => {
+  pos.do.resetOrderList();
+  console.log("sending items!!!");
+  console.log(items);
+};
+
+pos.do.archiveOrder = () => {
+  let id = posState.selectedWalkin;
+  let record = {};
+  order = posState.walkins[posState.selectedWalkin].order;
+  processedOrder = [];
+  for(let x = 0; x < order.length; x++){
+    let o = {
+      name: order[x].name,
+      price: order[x].price,
+      quantity: order[x].quantity
+    };
+    processedOrder.push(o);
+  }
+  record.items = order;
+  record.inTime = posState.walkins[posState.selectedWalkin].inTime;
+  record.outTime = new Date();
+  db.do.archiveOrder(record);
+  db.do.walkOutCustomer(id);
+};
+
+pos.do.walkinCustomer = () => {
+  db.do.walkinCustomer().then((id) => {
+    posState.selectedWalkin = id;
+    posState.walkins[id] = {order: []};
+    $('#orders-container').append(getWalkinElement(id, []));
   });
 };
 /*db.do.getCategories().then((categories) => {

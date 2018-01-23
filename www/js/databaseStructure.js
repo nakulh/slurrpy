@@ -52,3 +52,8 @@ orderHistory = {
   inTime: new Date(),
   outTime: new Date()
 };
+
+walkins = {
+  order: [],
+  inTime: new Date()
+};

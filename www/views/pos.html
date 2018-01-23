@@ -55,31 +55,35 @@
 
         <div id="order-summary-container" class="col-12 col-md-4 col-lg-3">
           <p class="section-header">Order</p>
-          <button onclick="createNewOrder()" type="button">Click Me!</button>
+          <button onclick="createNewOrder()" type="button">New Order</button>
 
           <table id="table-order-summary" class="table table-sm table-hover">
             <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Item</th>
                     <th scope="col" class="text-center">Qty.</th>
                     <th scope="col" class="text-center">Amt.</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="orderList">
               <tr>
                 <th scope="row"><input id="order-item-checkbox-1" type="checkbox"></th>
+                <th scope="col">New</th>
                 <td>Pancake with Maple Syrup</td>
                 <td id="order-item-quantity-1" class="text-center">2</td>
                 <td id="order-item-amount-1" class="text-center">398</td>
               </tr>
               <tr>
                 <th scope="row"><i class="fas fa-utensils" aria-hidden="true"></i></th>
+                <th scope="col">New</th>
                 <td>Red Velvet</td><td id="order-item-quantity-2" class="text-center">4</td>
                 <td id="order-item-amount-2" class="text-center">1020</td>
               </tr>
               <tr>
                 <th scope="row"><i class="fas fa-shopping-basket" aria-hidden="true"></i></th>
+                <th scope="col">New</th>
                 <td>Latte</td><td id="order-item-quantity-4" class="text-center">4</td>
                 <td id="order-item-amount-4" class="text-center">280</td>
                 </tr>
@@ -88,15 +92,15 @@
 
           <div id="order-btn-container">
             <div class="row no-gutters">
-              <button id="btn-remove-item" class="col btn btn-outline-danger btn-sm order-btn-options"><i class="far fa-trash-alt" aria-hidden="true" style="margin-right:10px;"></i>Remove</button>&nbsp;
-              <button id="btn-send-item" class="col btn btn-dark btn-sm order-btn-options"><i class="fas fa-utensils" aria-hidden="true" style="margin-right:10px;"></i>Send</button>
+              <button id="btn-remove-item" onclick="removeItems()" class="col btn btn-outline-danger btn-sm order-btn-options"><i class="far fa-trash-alt" aria-hidden="true" style="margin-right:10px;"></i>Remove</button>&nbsp;
+              <button id="btn-send-item" onclick="sendItemsToKitchen()" class="col btn btn-dark btn-sm order-btn-options"><i class="fas fa-utensils" aria-hidden="true" style="margin-right:10px;"></i>Send</button>
             </div>
             <div class="row no-gutters">
-              <button id="btn-mark-served" style="margin-top: 10px;" class="col btn btn-info btn-sm order-btn-options"><i class="fas fa-utensils" aria-hidden="true" style="margin-right:10px;"></i>Served</button>&nbsp;
+              <button id="btn-mark-served" onclick="markAsServed()" style="margin-top: 10px;" class="col btn btn-info btn-sm order-btn-options"><i class="fas fa-utensils" aria-hidden="true" style="margin-right:10px;"></i>Served</button>&nbsp;
               <button id="btn-mark-complete" style="margin-top: 10px;" class="col btn btn-success btn-sm order-btn-options"><i class="far fa-trash-alt" aria-hidden="true" style="margin-right:10px;"></i>Complete</button>
             </div>
             <div class="row no-gutters">
-              <button id="btn-checkout" style="margin-top: 10px;" class="col-12 btn btn-primary order-btn-options"><i class="fas fa-credit-card" aria-hidden="true" style="margin-right:10px;"></i>checkout</button>
+              <button id="btn-checkout" onclick="checkout()" style="margin-top: 10px;" class="col-12 btn btn-primary order-btn-options"><i class="fas fa-credit-card" aria-hidden="true" style="margin-right:10px;"></i>checkout</button>
             </div>
           </div>
 
@@ -105,31 +109,15 @@
         <div class="col-12 col-md-8 col-lg-9">
           <div id="category-container">
             <p class="section-header">Categories</p>
-            <button id="cat-1" type="button" class="btn btn-outline-dark btn-menu">Brunch</button>
-            <button id="cat-2" type="button" class="btn btn-outline-dark btn-menu">Salads</button>
-            <button id="cat-3" type="button" class="btn btn-outline-dark btn-menu">Pancakes</button>
-            <button id="cat-4" type="button" class="btn btn-outline-dark btn-menu">Waffles</button>
-            <button id="cat-5" type="button" class="btn btn-outline-dark btn-menu">Soups</button>
-            <button id="cat-6" type="button" class="btn btn-outline-dark btn-menu">Starters</button>
-            <button id="cat-7" type="button" class="btn btn-outline-dark btn-menu">Black Burger</button>
-            <button id="cat-8" type="button" class="btn btn-outline-dark btn-menu">Pasta</button>
-            <button id="cat-9" type="button" class="btn btn-outline-dark btn-menu">Lasagna</button>
-            <button id="cat-10" type="button" class="btn btn-outline-dark btn-menu">Risotto</button>
-            <button id="cat-11" type="button" class="btn btn-outline-dark btn-menu">Shakes</button>
           </div>
 
           <div id="items-container" class="row">
 
-            <div class="col-sm-8">
-              <p id="items-header" class="section-header">Salads</p>
-              <button id="item-4" type="button" class="btn btn-outline-dark btn-menu">Caeser Salad</button>
-              <button id="item-5" type="button" class="btn btn-outline-dark btn-menu">Salad Italian</button>
-              <button id="item-6" type="button" class="btn btn-outline-dark btn-menu">Spinach Mushroom Salad</button>
-              <button id="item-7" type="button" class="btn btn-outline-dark btn-menu">Greek Salad</button>
+            <div class="col-sm-8" id="categoryMenuList">
             </div>
 
             <div class="col-sm-4">
-              <p id="premodifier-header" class="section-header">Salad Italian</p>
+              <p id="premodifier-header" class="section-header"></p>
               <div class="form-group form-row">
                 <div class="col">
                   <select id="input-item-count" class="form-control no-border-radius">
@@ -143,7 +131,7 @@
                   </select>
                 </div>
               </div>
-              <button id="btn-item-add" type="button" class="btn btn-dark btn-block btn-menu" style="margin-right:5px;">Add Item</button>
+              <button id="btn-item-add" type="button" onclick="addItemToOrder()" class="btn btn-dark btn-block btn-menu" style="margin-right:5px;">Add Item</button>
             </div>
           </div>
 
@@ -164,29 +152,7 @@
           <div class="modal-body">
 
             <div id="orders-container">
-
-              <div id="order-info-2">
-                <div class="order-header">
-                  <p>#<span id="order-info-id-2">2</span><span id="order-info-edit-2"><i class="fas fa-edit" aria-hidden="true"></i></span></p>
-                  <p id="order-info-timer-2">00:00</p>
-                </div>
-                <div id="order-body-2">
-                  <p>1x Chhola Bhatura</p>
-                  <p>4x Samosa</p>
-                  <p>2x Cold Drink</p>
-                </div>
-              </div>
-
-              <div id="order-info-1">
-                <div class="order-header">
-                  <p>#<span id="order-info-id-1">1</span><span id="order-info-edit-1"><i class="fas fa-edit" aria-hidden="true"></i></span></p>
-                  <p id="order-info-timer-1">00:00</p>
-                </div>
-                <div id="order-body-1">
-                  <p>2x Paneer Paratha</p>
-                  <p>1x Dosa</p>
-                </div>
-              </div>
+              <!-- overview order list goes here -->
             </div>
             <div class="modal-buttons-container">
               <button type="button" class="btn btn-outline-dark btn-block" data-dismiss="modal">Close</button>
@@ -202,7 +168,7 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="../js/ui/popper.min.js"></script>
-    <script src="../js/ui/jquery-3.2.1.min.js"></script>
+    <script src="../js/ui/jquery-3.2.1.slim.min.js"></script>
     <script src="../js/pos.js"></script>
     <script src="../js/ui/bootstrap.min.js"></script>
     <script type="text/javascript" src="../js/ui/posScripts.js"></script>
