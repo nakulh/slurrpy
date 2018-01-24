@@ -1,8 +1,21 @@
 /*jshint esversion: 6 */
 const $ = require('jquery');
 var {ipcRenderer} = require('electron');
-ipcRenderer.on('cook', (e, p)=>{
-  console.log(p);
+ipcRenderer.on('itemReady', (e, item) => {
+  console.log("recieved event itemReady");
+  console.log(item);
+  if(item.belongsTo){
+    for(let x = 0; x < posState.walkins[item.belongsTo].order; x++){
+      order = posState.walkins[item.belongsTo].order[x];
+      if(order.name == item.name && order.quantity == item.quanitity && !item.wasServed){
+        posState.walkins[item.belongsTo].order[x].status = 'served';
+        posState.walkins[item.belongsTo].order[x].wasServed = true;
+      }
+    }
+    if(posState.selectedWalkin == item.belongsTo){
+      resetOrderList(posState.walkins[posState.selectedWalkin].order); //function from frontend
+    }
+  }
 });
 var pos = {};
 pos.do = {};
@@ -116,6 +129,7 @@ pos.do.resetOrderList = () => {
 };
 
 pos.do.sendItemsToKitchen = (items) => {
+  ipcRenderer.send('addItems', items);
   pos.do.resetOrderList();
   console.log("sending items!!!");
   console.log(items);

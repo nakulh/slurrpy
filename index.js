@@ -65,6 +65,6 @@ const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
 Menu.setApplicationMenu(mainMenu);
 
 app.server = require('./server.main.js')(app);
-app.cookDish = (table, dish, quantity) => {
-  mainWindow.webContents.send('cook', {table:table, dish:dish, quantity: quantity});
+app.itemReady = (item) => {
+  mainWindow.webContents.send('itemReady', item);
 };

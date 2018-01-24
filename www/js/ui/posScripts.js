@@ -123,8 +123,13 @@ function sendItemsToKitchen(){
 	console.log(toSend);
 	itemsToSend = [];
 	for(let x = 0; x < toSend.length; x++){
-		currentOrder[toSend[x]].status = 'inKitchen';
-		itemsToSend.push(currentOrder[toSend[x]]);
+		if(!currentOrder[toSend[x]].wasSentToKitchen && !currentOrder[toSend[x]].wasServed){
+			currentOrder[toSend[x]].status = 'inKitchen';
+			currentOrder[toSend[x]].type = 'Dine in';
+			currentOrder[toSend[x]].belongsTo = posState.selectedWalkin;
+			itemsToSend.push(currentOrder[toSend[x]]);
+			currentOrder[toSend[x]].wasSentToKitchen = true;
+		}
 	}
 	posState.walkins[posState.selectedWalkin].order = currentOrder;
 	pos.do.sendItemsToKitchen(itemsToSend);
@@ -136,7 +141,10 @@ function markAsServed(){
 	toMark = getCheckboxes();
 	console.log(toMark);
 	for(let x = 0; x < toMark.length; x++){
-		currentOrder[toMark[x]].status = 'served';
+		if(!currentOrder[toMark[x]].wasServed){
+			currentOrder[toMark[x]].status = 'served';
+		}
+		currentOrder[toMark[x]].wasServed = true;
 	}
 	posState.walkins[posState.selectedWalkin].order = currentOrder;
 	pos.do.resetOrderList();

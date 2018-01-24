@@ -16,7 +16,8 @@
     "moment": "^2.20.1",
     "morgan": "^1.9.0",
     "nedb": "^1.8.0",
-    "nodemon": "^1.14.3"
+    "nodemon": "^1.14.3",
+    "socket.io": "^2.0.4"
   },
   "devDependencies": {
     "electron": "1.7.10"
